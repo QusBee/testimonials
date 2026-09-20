@@ -1,104 +1,90 @@
-# Frontend Mentor - Testimonials grid section
+# Frontend Mentor - Testimonials grid section solution
 
-![Design preview for the Testimonials grid section coding challenge](./preview.jpg)
+This is a solution to the [Testimonials grid section challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/testimonials-grid-section-Nnw6J7Un7). Frontend Mentor challenges help you improve your coding skills by building realistic projects.
 
-## Welcome! 👋
+## Table of contents
 
-Thanks for checking out this front-end coding challenge.
+- [Overview](#overview)
+  - [The challenge](#the-challenge)
+  - [Screenshot](#screenshot)
+  - [Links](#links)
+- [My process](#my-process)
+  - [Built with](#built-with)
+  - [What I learned](#what-i-learned)
+  - [Continued development](#continued-development)
+  - [AI Collaboration](#ai-collaboration)
+- [Author](#author)
 
-[Frontend Mentor](https://www.frontendmentor.io) challenges help you improve your coding skills by building realistic projects.
+## Overview
 
-**To do this challenge, you need a basic understanding of HTML and CSS.**
+### The challenge
 
-## The challenge
+Users should be able to:
 
-Your challenge is to build out this testimonials grid section and get it looking as close to the design as possible.
+- View the optimal layout for the site depending on their device's screen size (mobile, tablet, and desktop)
 
-You can use any tools you like to help you complete the challenge. So if you've got something you'd like to practice, feel free to give it a go.
+### Screenshot
 
-Your users should be able to:
+![testimonials mobile](images/mobile.png)
+![testimonials tablet](images/tablet.png)
+![testimonials desktop](images/desktop.png)
 
-- View the optimal layout for the site depending on their device's screen size
+### Links
 
-### Want some support on the challenge? 
+- Solution URL: [github.com/QusBee/testimonials](https://github.com/QusBee/testimonials)
+- Live Site URL: [qusbee.github.io/testimonials](https://qusbee.github.io/testimonials)
 
-[Join our community](https://www.frontendmentor.io/community) and ask questions in the **#help** channel.
+## My process
 
-## Where to find everything
+### Built with
 
-Your task is to build out the project to the designs inside the `/design` folder. You will find both a mobile and a desktop version of the design. 
+- Semantic HTML5 markup
+- CSS custom properties
+- Flexbox
+- CSS Grid (including `grid-template-areas`)
+- Mobile-first workflow
 
-The designs are in JPG static format. Using JPGs will mean that you'll need to use your best judgment for styles such as `font-size`, `padding` and `margin`. 
+### What I learned
 
-If you would like the Figma design file to gain experience using professional tools and build more accurate projects faster, you can [subscribe as a PRO member](https://www.frontendmentor.io/pro).
+- **BEM modifiers vs. utility classes.** Background colors are tied to each card's position in the design (`content__section--1` … `--5`), since the color itself could change without the card moving. Text colors, on the other hand, repeat across completely different tags (`span`, `p`, `q`), so I pulled those into standalone utility classes (`text-white`, `text-grey-300`, etc.) that can be dropped onto any element instead of duplicating a color modifier per block.
 
-You will find all the required assets in the `/images` folder. The assets are already optimized.
+- **`grid-area` only means something inside its matching `grid-template-areas`.** I first set `grid-area: section-1` (etc.) directly on the card classes with no media query around them, while `grid-template-areas` only existed inside `@media (min-width: 768px)`. On mobile, the browser had named-area placement rules pointing at areas that didn't exist there, and the layout broke. The fix was moving the `grid-area` declarations inside the same media query as the template that defines those names:
 
-There is also a `style-guide.md` file containing the information you'll need, such as color palette and fonts.
+```css
+@media (min-width: 768px) {
+  .content__section--1 { grid-area: section-1; }
+  /* ... */
+  .content {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "section-1 section-1"
+      "section-2 section-3"
+      "section-4 section-4"
+      "section-5 section-5";
+  }
+}
+```
 
-## Using AI coding assistants
+- **Accessible landmarks need headings.** Running the markup through the W3C validator flagged every `<section>` for lacking a heading. Rather than showing a visible title that isn't in the design, I added a visually-hidden `<h2>` per card (e.g. "Review by Daniel Clifford") plus a single hidden `<h1>` for the page — screen reader users get a real heading structure to navigate by, while the visual design stays untouched.
 
-We've included two files to help you if you're using AI coding assistants (like Claude, GitHub Copilot, Cursor, etc.) while working on this challenge:
+- **Not everything that looks fluid needs `clamp()`.** I initially assumed the growing space above the content block between the mobile and desktop mockups needed a fluid, viewport-based value. Checking the Figma frames directly showed no explicit margin was ever set on that block — the "growth" was just the effect of centering a fixed-height block inside a taller viewport with `display: flex; align-items: center;`. Reproducing it exactly with `clamp()` math would have solved a problem that didn't exist.
 
-- `AGENTS.md` - Contains detailed instructions for AI assistants on how to help you with this challenge. It's tailored to this challenge's difficulty level, so the AI will provide guidance appropriate to your learning stage—offering more support for beginner challenges and encouraging more independence on advanced ones.
-- `CLAUDE.md` - A pointer file that directs Claude-based tools to the AGENTS.md instructions.
+- **Rule out the boring explanations before debugging CSS.** A `max-width: 30.5rem` that measured as 505px, then 366px, in the browser wasn't a units bug — it was the page zoom level (120%, then a stale cache after a live-server restart). Checking zoom/cache first saved a lot of wasted time second-guessing correct code.
 
-**How to use them:** You don't need to do anything! These files are automatically detected by most AI coding tools. The AI will read them and adjust its behavior to be a better learning partner—guiding you toward solutions rather than just giving you the answers.
+### Continued development
 
-**Note:** These files are designed to help you *learn*, not to do the work for you. The AI is instructed to ask questions, give hints, and explain concepts rather than writing complete solutions.
+- Get more hands-on practice with fluid typography/spacing (`clamp()`, the Utopia fluid space calculator) on a project where the design actually calls for continuous scaling, rather than one where centering already does the job.
+- Keep using the W3C validator and DevTools' grid overlay as a first debugging step before assuming the CSS logic itself is wrong.
 
-## Building your project
+### AI Collaboration
 
-Feel free to use any workflow that you feel comfortable with. Below is a suggested process, but do not feel like you need to follow these steps:
+I used Claude (via Claude Code) throughout this project, guided by this challenge's `AGENTS.md`, which is set up to act as a mentor rather than write the code for me.
 
-1. Initialize your project as a public repository on [GitHub](https://github.com/). Creating a repo will make it easier to share your code with the community if you need help. If you're not sure how to do this, [have a read-through of this Try Git resource](https://try.github.io/).
-2. Configure your repository to publish your code to a web address. This will also be useful if you need some help during a challenge as you can share the URL for your project with your repo URL. There are a number of ways to do this, and we provide some recommendations below.
-3. Look through the designs to start planning out how you'll tackle the project. This step is crucial to help you think ahead for CSS classes to create reusable styles.
-4. Before adding any styles, structure your content with HTML. Writing your HTML first can help focus your attention on creating well-structured content.
-5. Write out the base styles for your project, including general content styles, such as `font-family` and `font-size`.
-6. Start adding styles to the top of the page and work down. Only move on to the next section once you're happy you've completed the area you're working on.
+- Instead of finished CSS, I got guiding questions and was pointed at tools to check things myself — the W3C validator for the missing-heading warnings, DevTools for the zoom/cache mix-up, and Figma's own frame properties to confirm the "growing margin" was just centering.
+- It helped explain the reasoning behind BEM modifiers vs. utility classes, and why `grid-area` needs to be scoped to the same media query as the `grid-template-areas` that defines it, before I wrote the fix myself.
+- I also used it to help write this README, since English isn't my first language and I wanted the write-up to still be clear.
 
-## Deploying your project
+## Author
 
-As mentioned above, there are many ways to host your project for free. Our recommended hosts are:
-
-- [GitHub Pages](https://pages.github.com/)
-- [Vercel](https://vercel.com/)
-- [Netlify](https://www.netlify.com/)
-
-You can host your site using one of these solutions or any of our other trusted providers. [Read more about our recommended and trusted hosts](https://www.frontendmentor.io/guides/hosting-your-solution).
-
-## Create a custom `README.md`
-
-We strongly recommend overwriting this `README.md` with a custom one. We've provided a template inside the [`README-template.md`](./README-template.md) file in this starter code.
-
-The template provides a guide for what to add. A custom `README` will help you explain your project and reflect on your learnings. Please feel free to edit our template as much as you like.
-
-Once you've added your information to the template, delete this file and rename the `README-template.md` file to `README.md`. That will make it show up as your repository's README file.
-
-## Submitting your solution
-
-Submit your solution on the platform for the rest of the community to see. Follow our ["Complete guide to submitting solutions"](https://www.frontendmentor.io/guides/how-to-submit-solutions) for tips on how to do this.
-
-Remember, if you're looking for feedback on your solution, be sure to ask questions when submitting it. The more specific and detailed you are with your questions, the higher the chance you'll get valuable feedback from the community.
-
-## Sharing your solution
-
-There are multiple places you can share your solution:
-
-1. Share your solution page in the **#finished-projects** channel of the [community](https://www.frontendmentor.io/community). 
-2. Share on [X (formerly Twitter)](https://x.com/frontendmentor) and mention **@frontendmentor**, including the repo and live URLs in your post. We'd love to take a look at what you've built and help share it around.
-3. Share your solution on [LinkedIn](https://www.linkedin.com/company/frontend-mentor/).
-4. Blog about your experience building your project. Writing about your workflow, technical choices, and talking through your code is a brilliant way to reinforce what you've learned. Great platforms to write on are [dev.to](https://dev.to/), [Hashnode](https://hashnode.com/), and [CodeNewbie](https://community.codenewbie.org/).
-
-We provide templates to help you share your solution once you've submitted it on the platform. Please do edit them and include specific questions when you're looking for feedback. 
-
-The more specific you are with your questions the more likely it is that another member of the community will give you feedback.
-
-## Got feedback for us?
-
-We love receiving feedback! We're always looking to improve our challenges and our platform. So if you have anything you'd like to mention, please email hi[at]frontendmentor[dot]io.
-
-This challenge is completely free. Please share it with anyone who will find it useful for practice.
-
-**Have fun building!** 🚀
+- Frontend Mentor - [@Qusbee](https://www.frontendmentor.io/profile/Qusbee)
+- GitHub - [@Qusbee](https://github.com/Qusbee)
