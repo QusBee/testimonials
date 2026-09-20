@@ -11,7 +11,6 @@
   --color-black: hsl(0, 0%, 7%);
   --color-white: hsl(0, 0%, 100%);
   --color-bg: hsl(300, 5.3%, 96.3%) ;
-  
 }
 
 * {
@@ -38,7 +37,7 @@ body {
   gap: 3.2rem;
   width: 100%;
   max-width: 30.5rem;
-  margin: 3.2rem 1.6rem;
+  margin: 6.4rem 3.2rem;
 }
 
 .content__section {
@@ -111,20 +110,24 @@ body {
   line-height: 1.4;
 }
 
-.content__section--variant-1 {
+.content__section--1 {
   background-color: var(--color-purple-500);
 }
 
-.content__section--variant-2 {
+.content__section--2 {
   background-color: var(--color-grey-500);
 }
 
-.content__section--variant-3 {
+.content__section--3 {
   background-color: var(--color-white);
 }
 
-.content__section--variant-4 {
+.content__section--4 {
   background-color: var(--color-dark-blue);
+}
+
+.content__section--5 {
+  background-color: var(--color-white);
 }
 
 .text-white {
@@ -153,4 +156,47 @@ body {
 
 .text-grey-500 {
   color: var(--color-grey-500);
+}
+
+@media (min-width: 768px) {
+  .content__section--1 {
+    grid-area: section-1;
+  }
+
+  .content__section--2 {
+    grid-area: section-2;
+  }
+
+  .content__section--3 {
+    grid-area: section-3;
+  }
+
+  .content__section--4 {
+  grid-area: section-4;
+  }
+
+  .content__section--5 {
+  grid-area: section-5;
+  }
+  
+  .content {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+    "section-1 section-1"
+    "section-2 section-3"
+    "section-4 section-4"
+    "section-5 section-5";
+    max-width: 64.7rem;
+  }
+}
+
+@media (min-width: 1440px) {
+  .content {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-areas: 
+    "section-1 section-1 section-2 section-5"
+    "section-3 section-4 section-4 section-5";
+    max-width: 111.4rem;
+    
+  }
 }
